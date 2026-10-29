@@ -49,11 +49,19 @@ public class Polaroid : MonoBehaviour
     private Texture2D RenderCameraToTexture(Camera camera)
     {
         camera.Render();
-        RenderTexture.active = camera.targetTexture;
+
+        // The viewfinder texture is anti-aliased, and reading pixels straight from it comes out black on the Quest.
+        // Copy it into a plain texture first, then read from that one.
+        RenderTexture plain = RenderTexture.GetTemporary(256, 256, 0, RenderTextureFormat.Default, RenderTextureReadWrite.sRGB);
+        Graphics.Blit(camera.targetTexture, plain);
+        RenderTexture.active = plain;
 
         Texture2D photo = new Texture2D(256, 256, TextureFormat.RGB24, false);
         photo.ReadPixels(new Rect(0, 0, 256, 256), 0, 0);
         photo.Apply();
+
+        RenderTexture.active = null;
+        RenderTexture.ReleaseTemporary(plain);
 
         return photo;
     }

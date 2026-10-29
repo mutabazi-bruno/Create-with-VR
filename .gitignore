@@ -110,3 +110,8 @@ InitTestScene*.unity*
 
 # Editor settings for my machine
 /.vscode/
+
+# AllSky Free: keep only the sky this project uses
+/[Aa]ssets/AllSkyFree/*
+!/[Aa]ssets/AllSkyFree/Cartoon Base BlueSky/
+!/[Aa]ssets/AllSkyFree/Cartoon Base BlueSky.meta
